@@ -16,7 +16,7 @@ const Author = () => {
       <i>Designed and Coded By </i>
       <a 
         style={{color: "#4f772d"}}
-        href="https://www.freecodecamp.org/no-stack-dub-sack"
+        href="linkedin.com/in/joel-agustín-dorta-49b153216"
         target="_blank"
         rel="noreferrer"
       >
