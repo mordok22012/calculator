@@ -37,7 +37,7 @@ function App() {
     <MainContainer>
       <DisplayContainer>
         <DivInsideDisplay>{formulaScreen}</DivInsideDisplay>
-        <DivInsideDisplay>{outputScreen}</DivInsideDisplay>
+        <DivInsideDisplay   id="display">{outputScreen}</DivInsideDisplay>
       </DisplayContainer>
       <Keypad/>
       <Author />   

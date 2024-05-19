@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import {
-  increment,
-  decrement,
-  reset,
-} from "../redux/calculatorSlices/slices";
+import { numbers } from "../redux/calculatorSlices/slices";
 
 const Button = styled.button`
   padding: 20px;
@@ -40,56 +36,77 @@ const Keypad = () => {
       $gridcolumn="1/ 3" 
       id="clear" 
       value="AC"
-      onClick={() => {dispatch(reset())}}>
+      onClick={(e) => {dispatch(numbers(e.target.value))}}>
         AC
       </Button>
-      <Button $background="#4f772d" id="divide" value="/">
+      <Button 
+      $background="#4f772d" 
+      id="divide" 
+      value="/"
+      onClick={(e) => {dispatch(numbers(e.target.value))}}
+      >
         /
       </Button>
-      <Button $background="#4f772d" id="multiply" value="x">
+      <Button 
+        $background="#4f772d" 
+        id="multiply" 
+        value="x"
+        onClick={(e) => {dispatch(numbers(e.target.value))}}>
         x
       </Button>
-      <Button id="seven" value="7">
+
+      <Button 
+      id="seven" 
+      value="7"
+      onClick={(e) => {dispatch(numbers(e.target.value))}}>
         7
       </Button>
-      <Button id="eight" value="8">
+
+      <Button id="eight" value="8" onClick={(e) => {dispatch(numbers(e.target.value))}}>
         8
       </Button>
-      <Button id="nine" value="9">
+      <Button id="nine" value="9" onClick={(e) => {dispatch(numbers(e.target.value))}}>
         9
       </Button>
-      <Button $background="#4f772d" id="subtract" value="-">
+      <Button 
+      $background="#4f772d" 
+      id="subtract" 
+      value="-"
+      onClick={(e) => {dispatch(numbers(e.target.value))}}>
         -
       </Button>
-      <Button id="four" value="4">
+      <Button id="four" value="4" onClick={(e) => {dispatch(numbers(e.target.value))}}>
         4
       </Button>
-      <Button id="five" value="5">
+      <Button id="five" value="5" onClick={(e) => {dispatch(numbers(e.target.value))}}>
         5
       </Button>
-      <Button id="six" value="6">
+      <Button id="six" value="6" onClick={(e) => {dispatch(numbers(e.target.value))}}>
         6
       </Button>
       <Button 
       $background="#4f772d" 
       id="add" 
       value="+"
-      onClick={() => {dispatch(increment())}}>
+      onClick={(e) => {dispatch(numbers(e.target.value))}}>
         +
       </Button>
-      <Button id="one" value="1">
+      <Button id="one" value="1" onClick={(e) => {dispatch(numbers(e.target.value))}}>
         1
       </Button>
-      <Button id="two" value="2">
+      <Button id="two" value="2" onClick={(e) => {dispatch(numbers(e.target.value))}}>
         2
       </Button>
-      <Button id="three" value="3">
+      <Button id="three" value="3" onClick={(e) => {dispatch(numbers(e.target.value))}}>
         3
       </Button>
-      <Button $gridcolumn="1 / 3" id="zero" value="0">
+      <Button 
+      $gridcolumn="1 / 3" 
+      id="zero" value="0" 
+      onClick={(e) => {dispatch(numbers(e.target.value))}}>
         0
       </Button>
-      <Button id="decimal" value=".">
+      <Button id="decimal" value="." onClick={(e) => {dispatch(numbers(e.target.value))}}>
         .
       </Button>
       <Button
@@ -99,6 +116,7 @@ const Keypad = () => {
         $background="#4f772d"
         id="equals"
         value="="
+        onClick={(e) => {dispatch(numbers(e.target.value))}}
       >
         =
       </Button>

@@ -1,39 +1,115 @@
 import { createSlice } from '@reduxjs/toolkit'
+import * as math from 'mathjs';
 
 const initialState = {
   outputScreen: "0",
-  formulaScreen: "0",
+  formulaScreen: "",
+  result: "",
 }
 
 export const calculatorSlice = createSlice({
   name: 'calculator',
   initialState,
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.outputScreen += 1
-    },
-    operation: (state) => {
-      state.value -= 1
-    },
-    result: (state) => {
-      state.value -= 1
-    },
-    numbers: (state) => {
-      state.value -= 1
-    },
-    reset: (state) => {
-      state.outputScreen = 0
-      state.formulaScreen = 0;
+    numbers: (state, action) => {
+      const appendToScreen = (char) => {
+        if (state.outputScreen === "0" && char !== ".") {
+          state.outputScreen = char;
+        } else if (["+", "-", "*", "/"].includes(state.outputScreen)) {
+          state.outputScreen = char;
+        } else {
+          state.outputScreen += char;
+        }
+        state.formulaScreen += char;
+      };
 
+      const reset = () => {
+        state.outputScreen = "0";
+        state.formulaScreen = "";   
+        state.result = "";
+      }
+
+      const handleDecimal = () => {
+        if (!state.outputScreen.includes(".")) {
+          appendToScreen(action.payload);
+        }
+      }
+
+      const addNumber = () => {
+        appendToScreen(action.payload);
+      }
+
+      const handleZero = () => {
+        if (state.outputScreen !== "0") {
+          appendToScreen(action.payload);
+        }
+      }
+
+      const handleOperator = (operator) => {
+        if (state.formulaScreen.length === 0 && operator !== "-") {
+          return; 
+        }
+
+        if (["+", "*", "/"].includes(state.formulaScreen.slice(-1))) {
+          state.formulaScreen = state.formulaScreen.slice(0, -1) + operator;
+        } else if (state.formulaScreen.slice(-1) === "-") {
+          if (state.formulaScreen.length > 1 && ["+", "*", "/"].includes(state.formulaScreen.slice(-2, -1))) {
+            state.formulaScreen = state.formulaScreen.slice(0, -2) + operator;
+          } else {
+            appendToScreen(operator);
+          }
+        } else {
+          appendToScreen(operator);
+        }
+        state.outputScreen = operator;
+      }
+
+      const handleSubtract = () => {
+        if (state.formulaScreen.length === 0) {
+          appendToScreen("-");
+        } else {
+          const lastChar = state.formulaScreen.slice(-1);
+          if (["+", "*", "/"].includes(lastChar)) {
+            appendToScreen("-");
+          } else if (lastChar !== "-") {
+            handleOperator("-");
+          }
+        }
+      };
+
+      const handleEqual = () => {
+        try {
+          const formula = state.formulaScreen.replace(/x/g, '*');
+          state.result = math.evaluate(formula);
+          
+          state.outputScreen = state.result.toString();
+          state.formulaScreen = state.result.toString();
+        } catch (error) {
+          state.outputScreen = "Error";
+        }
+      }
+
+      const handlers = {
+        '0': handleZero,
+        '.': handleDecimal,
+        'AC': reset,
+        '/': () => handleOperator('/'),
+        'x': () => handleOperator('*'),
+        '+': () => handleOperator('+'),
+        '-': handleSubtract,
+        '=': handleEqual,
+      }
+
+      if (handlers[action.payload]) {
+        handlers[action.payload]();
+      } else {
+        addNumber();
+      }
     },
   },
 })
 
-// Action creators are generated for each case reducer function
-export const { increment, decrement, reset } = calculatorSlice.actions
+
+export const { numbers } = calculatorSlice.actions
 
 export default calculatorSlice.reducer
